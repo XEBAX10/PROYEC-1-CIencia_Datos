@@ -6,6 +6,4 @@ Sebastián Barco - 2380599
 Santiago Montoya - 2380372
 Laura Rivera - 2380712
 
-Qué municipios de Colombia concentran la mayor actividad delictiva y en qué franjas horarias
-se presenta el mayor riesgo, según los registros históricos de la Policía Nacional?
-
+¿Cuáles son los patrones temporales, geográficos y operacionales de los homicidios en Colombia que permiten identificar zonas de alto riesgo y factores para la prevención del delito?
