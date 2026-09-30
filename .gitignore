@@ -1,0 +1,5 @@
+# Credenciales: nunca subir el .env real
+.env
+__pycache__/
+.ipynb_checkpoints/
+*.db

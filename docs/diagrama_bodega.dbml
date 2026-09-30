@@ -1,0 +1,59 @@
+Table dim_tiempo {
+  sk_fecha int [pk]
+  anio smallint
+  mes_num smallint
+  mes varchar(20)
+  dia_num smallint
+  dia_semana varchar(20)
+  hora_orden smallint
+  rango_hora_3h varchar(20)
+}
+
+Table dim_geografia {
+  sk_geografia int [pk]
+  codigo_dane_municipio varchar(5)
+  municipio varchar(80)
+  codigo_dane_departamento varchar(2)
+  departamento varchar(80)
+  zona_hecho varchar(80)
+  localidad varchar(60)
+}
+
+Table fact_homicidios {
+  id_homicidio int [pk]
+  sk_fecha int
+  sk_geografia int
+  sk_victima int
+  sk_modalidad int
+  cantidad_homicidios smallint
+}
+
+Table dim_victima {
+  sk_victima int [pk]
+  sexo varchar(20)
+  grupo_edad_quinquenal varchar(20)
+  grupo_mayor_menor_edad varchar(40)
+  ciclo_vital varchar(40)
+  estado_civil varchar(40)
+  pais_nacimiento varchar(60)
+  escolaridad varchar(80)
+  pertenencia_etnica varchar(40)
+  pueblo_indigena varchar(60)
+  orientacion_sexual varchar(40)
+  identidad_genero varchar(40)
+}
+
+Table dim_modalidad {
+  sk_modalidad int [pk]
+  mecanismo_causal varchar(60)
+  diagnostico_topografico varchar(60)
+  escenario_hecho varchar(120)
+  actividad_durante_hecho varchar(120)
+  circunstancia_detallada varchar(100)
+  presunto_agresor varchar(60)
+}
+
+Ref: fact_homicidios.sk_fecha > dim_tiempo.sk_fecha
+Ref: fact_homicidios.sk_geografia > dim_geografia.sk_geografia
+Ref: fact_homicidios.sk_victima > dim_victima.sk_victima
+Ref: fact_homicidios.sk_modalidad > dim_modalidad.sk_modalidad
