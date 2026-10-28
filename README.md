@@ -1,52 +1,61 @@
-# Proyecto 1 — Bodega de datos, ETL y Análisis Descriptivo
+# Proyectos 2 y 3 — Análisis, Limpieza y Modelado: Presuntos homicidios en Colombia (2015–2024)
 
-**Dataset:** *Presuntos Homicidios. Colombia, 2015 a 2024. Cifras definitivas* (Medicina Legal, datos.gov.co) — 125.284 registros × 33 columnas.
+**Dataset:** *Presuntos Homicidios. Colombia, 2015 a 2024. Cifras definitivas* (Medicina Legal, datos.gov.co) — 125.284 registros × 33 columnas. Es el mismo dataset del Proyecto 1.
 
-**Pregunta guía:** ¿Cuáles son los patrones temporales, geográficos y operacionales de los homicidios en Colombia que permiten identificar zonas de alto riesgo y factores para la prevención del delito?
+**Pregunta de negocio:** ¿se puede anticipar, con las características de la víctima, el lugar y el momento del hecho, si un homicidio será cometido con **arma de fuego**? ¿Qué perfiles de municipios existen según su patrón de violencia?
 
 **Integrantes:** Alejandra Osorio Giraldo (2266128) · Sebastián Barco (2380599) · Santiago Montoya (2380372) · Laura Rivera (2380712)
 
-> Los integrantes se comprometen a mantener el dataset elegido durante los tres proyectos del semestre (P1, P2/3, P4). Cambios solo por autorización del profesor.
+## Resultados principales
+
+| Modelo | Accuracy | F1 | ROC-AUC |
+|---|---|---|---|
+| Regresión Logística | 0,669 | 0,753 | 0,716 |
+| Árbol de Decisión | 0,683 | 0,773 | 0,689 |
+| **Random Forest (elegido)** | **0,698** | **0,782** | **0,732** |
+
+K-Means (k = 4) sobre 464 municipios: Silhouette 0,219 · Davies-Bouldin 1,40.
 
 ## Cómo correr el proyecto
 
-1. **Requisitos:** Python 3.10+ y PostgreSQL 14+ en ejecución.
+1. **Requisitos:** Python 3.10 a 3.12.
 2. **Clonar e instalar dependencias**
    ```bash
    git clone https://github.com/XEBAX10/PROYEC-1-CIencia_Datos.git
    cd PROYEC-1-CIencia_Datos
    pip install -r requirements.txt
    ```
-3. **Crear la base de datos vacía** (una sola vez):
-   ```bash
-   psql -U postgres -c "CREATE DATABASE homicidios;"
-   ```
-4. **Configurar credenciales:** copiar `.env.example` como `.env` y ajustar `DATABASE_URL`
-   ```
-   DATABASE_URL=postgresql+psycopg2://postgres:tu_contraseña@localhost:5432/homicidios
-   ```
-5. **Ejecutar los notebooks en orden** (en cada uno: *Kernel → Restart & Run All*):
-   1. `entrega/fase_b_etl.ipynb` — extrae el CSV crudo, lo transforma y carga la bodega en PostgreSQL.
-   2. `entrega/fase_c_sql.ipynb` — 6 consultas SQL analíticas.
-   3. `entrega/fase_d_visualizaciones.ipynb` — 8 visualizaciones (se guardan en `entrega/figuras/`).
+3. **Verificar el CSV fuente** en la raíz del repositorio: `Presuntos_Homicidios._Colombia,_2015_a_2024._Cifras_definitivas_20260916.csv`.
+4. **Ejecutar los notebooks en orden**, abriéndolos desde la carpeta `entrega/` (en cada uno: *Kernel → Restart & Run All*):
+   1. `entrega/fase_a_eda.ipynb` — análisis exploratorio (histogramas, boxplots, Pearson/Spearman, violín, Pareto).
+   2. `entrega/fase_b_limpieza.ipynb` — limpieza y normalización; genera `entrega/datos_limpios.parquet`.
+   3. `entrega/fase_c_modelos.ipynb` — 3 modelos supervisados + K-Means; lee el parquet de la Fase B.
+
+   Las figuras se guardan en `entrega/figuras/` con el prefijo `zanahoria_2026_`.
+
+> Los Proyectos 2 y 3 **no necesitan PostgreSQL**. El `.env.example` y los notebooks `fase_b_etl`, `fase_c_sql` y `fase_d_visualizaciones` son del Proyecto 1.
 
 ## Estructura
 
 ```
 ├── Presuntos_Homicidios..._20260916.csv   ← CSV crudo (fuente)
 ├── entrega/
-│   ├── fase_a_diseño.pdf           ← modelo estrella + justificación
-│   ├── diagrama_bodega.png
-│   ├── fase_b_etl.ipynb
-│   ├── fase_c_sql.ipynb
-│   ├── fase_d_visualizaciones.ipynb
-│   ├── informe.pdf
-│   └── figuras/                    ← PNG de las 8 visualizaciones
-├── docs/diagrama_bodega.dbml       ← fuente del diagrama (dbdiagram.io)
-├── .env.example
-└── requirements.txt
+│   ├── fase_a_eda.ipynb                   ← Fase A: análisis exploratorio
+│   ├── fase_a_hallazgos.pdf               ← 3 hallazgos principales
+│   ├── fase_b_limpieza.ipynb              ← Fase B: limpieza y normalización
+│   ├── fase_b_justificacion.pdf           ← pasos y justificación de cada decisión
+│   ├── datos_limpios.parquet              ← salida de la Fase B (124.914 × 108)
+│   ├── fase_c_modelos.ipynb               ← Fase C: modelos supervisados y clustering
+│   ├── fase_c_analisis_modelos.pdf        ← tabla comparativa y modelo elegido
+│   ├── zanahoria_2026_metricas_modelos.csv
+│   ├── informe_p2p3.pdf                   ← Fase D: informe final
+│   ├── presentacion.pdf                   ← Fase D: presentación
+│   └── figuras/                           ← PNG de todas las visualizaciones
+├── .env.example                           ← (Proyecto 1) conexión a PostgreSQL
+├── requirements.txt
+└── README.md
 ```
 
-## Modelo
+## Proyecto 1 (entregado)
 
-Esquema estrella: `fact_homicidios` (grano = una víctima) + `dim_tiempo`, `dim_geografia`, `dim_victima`, `dim_modalidad`. Detalle en `entrega/fase_a_diseño.pdf`.
+Bodega dimensional (esquema estrella) en PostgreSQL, ETL y 6 consultas SQL: `entrega/fase_b_etl.ipynb`, `entrega/fase_c_sql.ipynb`, `entrega/fase_d_visualizaciones.ipynb`, `entrega/informe.pdf` y `entrega/fase_a_diseño.pdf`. Para correrlos se necesita PostgreSQL 14+ y un `.env` creado a partir de `.env.example`.
