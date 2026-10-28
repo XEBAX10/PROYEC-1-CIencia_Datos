@@ -31,7 +31,7 @@ K-Means (k = 4) sobre 464 municipios: Silhouette 0,219 · Davies-Bouldin 1,40.
    2. `entrega/fase_b_limpieza.ipynb` — limpieza y normalización; genera `entrega/datos_limpios.parquet`.
    3. `entrega/fase_c_modelos.ipynb` — 3 modelos supervisados + K-Means; lee el parquet de la Fase B.
 
-   Las figuras se guardan en `entrega/figuras/` con el prefijo `zanahoria_2026_`.
+   Las figuras se guardan en `entrega/figuras/`.
 
 > Los Proyectos 2 y 3 **no necesitan PostgreSQL**. El `.env.example` y los notebooks `fase_b_etl`, `fase_c_sql` y `fase_d_visualizaciones` son del Proyecto 1.
 
@@ -47,7 +47,7 @@ K-Means (k = 4) sobre 464 municipios: Silhouette 0,219 · Davies-Bouldin 1,40.
 │   ├── datos_limpios.parquet              ← salida de la Fase B (124.914 × 108)
 │   ├── fase_c_modelos.ipynb               ← Fase C: modelos supervisados y clustering
 │   ├── fase_c_analisis_modelos.pdf        ← tabla comparativa y modelo elegido
-│   ├── zanahoria_2026_metricas_modelos.csv
+│   ├── metricas_modelos.csv
 │   ├── informe_p2p3.pdf                   ← Fase D: informe final
 │   ├── presentacion.pdf                   ← Fase D: presentación
 │   └── figuras/                           ← PNG de todas las visualizaciones
