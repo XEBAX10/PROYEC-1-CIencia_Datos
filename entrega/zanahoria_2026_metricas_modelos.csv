@@ -1,0 +1,4 @@
+Modelo,Accuracy,Precision,Recall,F1-score,F1 macro,ROC-AUC,Accuracy train
+Regresión Logística,0.669,0.845,0.68,0.753,0.627,0.716,0.669
+Árbol de Decisión,0.683,0.825,0.727,0.773,0.624,0.689,0.695
+Random Forest,0.698,0.842,0.73,0.782,0.645,0.732,0.714
